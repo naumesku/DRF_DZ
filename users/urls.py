@@ -6,5 +6,6 @@ from users.apps import UsersConfig
 app_name = UsersConfig.name
 
 urlpatterns = [
-    path('user/update/<int:pk>/', UserUpdateAPIView.as_view(), name='user-update'),
+    path('update/<int:pk>/', UserUpdateAPIView.as_view(), name='user-update'),
+    path('payment_list/', PaymentListAPIView.as_view(), name='payment_list'),
 ]

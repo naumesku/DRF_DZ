@@ -1,6 +1,10 @@
 from rest_framework import viewsets, generics
 from materials.models import Course, Lesson
-from materials.serializers import CourseSerializer, LessonSerializer
+from materials.serializers import CourseSerializer, LessonSerializer, PaymentsSerializer
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import OrderingFilter
+
+from users.models import Payments
 
 
 class CourseViewSet(viewsets.ModelViewSet):
