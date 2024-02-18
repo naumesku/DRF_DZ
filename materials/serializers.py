@@ -1,6 +1,7 @@
 from rest_framework import serializers
+
+from conf_my import NULLABLE
 from materials.models import Course, Lesson
-from users.models import Payments
 
 
 class LessonSerializer(serializers.ModelSerializer):
@@ -10,16 +11,10 @@ class LessonSerializer(serializers.ModelSerializer):
 
 class CourseSerializer(serializers.ModelSerializer):
     lesson_cnt = serializers.SerializerMethodField()
-    lesson = LessonSerializer(source='lesson_set', many=True)
+    lesson = LessonSerializer(source='lesson_set', many=True, required=False)
     def get_lesson_cnt(self, instance):
         return instance.lesson_set.all().count()
 
     class Meta:
         model = Course
-        fields = '__all__'
-
-
-class PaymentsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Payments
         fields = '__all__'

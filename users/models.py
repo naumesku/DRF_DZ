@@ -10,7 +10,6 @@ from materials.models import Lesson, Course
 class User(AbstractUser):
 
     username = None
-
     email = models.EmailField(unique=True, verbose_name='почта')
     avatar = models.ImageField(upload_to='users/', verbose_name='аватар', **NULLABLE)
     phone = models.CharField(max_length=20, verbose_name='телефон', **NULLABLE)
@@ -39,9 +38,8 @@ class Payments(models.Model):
     amount = models.PositiveIntegerField(verbose_name='Сумма оплаты')
     method = models.CharField(choices=ChoicePayment.choices, default='cash', verbose_name='способ оплаты')
 
-
     def __str__(self):
-        return f'Оплачен:{self.payment_amount}'
+        return f'Оплачен:{self.amount}'
 
     class Meta:
         verbose_name = "платеж"
