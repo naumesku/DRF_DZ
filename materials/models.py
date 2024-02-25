@@ -4,6 +4,7 @@ from config.settings import AUTH_USER_MODEL
 
 
 class Course(models.Model):
+    """Модель Курса"""
     title = models.CharField(max_length=150, verbose_name='название')
     preview = models.ImageField(upload_to='materials/', verbose_name='картинка', **NULLABLE)
     description = models.TextField(**NULLABLE, verbose_name='описание')
@@ -17,6 +18,7 @@ class Course(models.Model):
         verbose_name_plural = 'Курсы'
 
 class Lesson(models.Model):
+    """Модель Урока"""
     title = models.CharField(max_length=150, verbose_name='название')
     preview = models.ImageField(upload_to='materials/', verbose_name='картинка', **NULLABLE)
     description = models.TextField(**NULLABLE, verbose_name='описание')
@@ -31,3 +33,13 @@ class Lesson(models.Model):
         verbose_name = 'Урок'
         verbose_name_plural = 'Уроки'
 
+
+class Subscription(models.Model):
+    user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='курс')
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='курс')
+
+    def __str__(self):
+        return f"{self.user} {self.course}"
+    class Meta:
+        verbose_name = 'Подписка'
+        verbose_name_plural = 'Подписки'

@@ -8,6 +8,7 @@ from materials.models import Lesson, Course
 
 
 class User(AbstractUser):
+    """Модель класса User"""
 
     username = None
     email = models.EmailField(unique=True, verbose_name='почта')
@@ -27,6 +28,7 @@ class User(AbstractUser):
         verbose_name_plural = "пользователи"
 
 class Payments(models.Model):
+    """Модель класса Payments"""
     class ChoicePayment(models.TextChoices):
         CASH = 'cash', 'наличные'
         TRANSFER = 'transfer', 'перевод на счет'

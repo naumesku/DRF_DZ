@@ -4,6 +4,7 @@ from materials.models import Course, Lesson
 from users.models import Payments
 
 class Command(BaseCommand):
+    """Команда для заполнения БД уроками и курсами"""
 
     def handle(self, *args, **options):
         payments_list = [
