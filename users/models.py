@@ -41,7 +41,7 @@ class Payments(models.Model):
     method = models.CharField(choices=ChoicePayment.choices, default='cash', verbose_name='способ оплаты')
 
     def __str__(self):
-        return f'Оплачен:{self.amount}'
+        return f'{self.amount}'
 
     class Meta:
         verbose_name = "платеж"

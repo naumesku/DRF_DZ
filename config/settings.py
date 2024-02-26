@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'users',
     'materials',
     'django_filters',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -134,12 +135,14 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        # 'rest_framework.permissions.IsAuthenticated',
-        'rest_framework.permissions.AllowAny',
-
+        'rest_framework.permissions.IsAuthenticated',
+        # 'rest_framework.permissions.AllowAny',
     ],
 }
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(hours=3)
 }
+
+STRIPE_BASE_URL = 'https://api.stripe.com'
+STRIPE_API_KEY ='sk_test_51OnjaSIvIURs07U94Qc286RvCT4V4phIYaT5RIlbfsdRx9ypR8Rn3ShJuMKno0MtLO7wTEowN04kKg9hnGoQo45r006Vi8HTUj'

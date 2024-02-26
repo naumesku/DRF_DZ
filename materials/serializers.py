@@ -5,6 +5,7 @@ from config.settings import AUTH_USER_MODEL
 from conf_my import NULLABLE
 from materials.models import Course, Lesson, Subscription
 from materials.validators import LinkValidator
+from users.models import Payments
 
 
 class LessonSerializer(serializers.ModelSerializer):
@@ -19,8 +20,13 @@ class CourseSerializer(serializers.ModelSerializer):
 
     lesson_cnt = serializers.SerializerMethodField()
     lesson = LessonSerializer(source='lesson_set', many=True, required=False)
+    is_payments = serializers.SerializerMethodField()
+
     def get_lesson_cnt(self, instance):
         return instance.lesson_set.all().count()
+
+    def get_is_payments(self, instance):
+        return Payments.objects.filter(course=instance).exists()
 
     class Meta:
         model = Course
