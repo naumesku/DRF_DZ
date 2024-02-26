@@ -6,6 +6,7 @@ from conf_my import NULLABLE
 from materials.models import Course, Lesson, Subscription
 from materials.validators import LinkValidator
 from users.models import Payments
+from users.services import create_sessions
 
 
 class LessonSerializer(serializers.ModelSerializer):
@@ -17,16 +18,19 @@ class LessonSerializer(serializers.ModelSerializer):
 
 class CourseSerializer(serializers.ModelSerializer):
     """Сериализатор для Курса"""
-
     lesson_cnt = serializers.SerializerMethodField()
     lesson = LessonSerializer(source='lesson_set', many=True, required=False)
     is_payments = serializers.SerializerMethodField()
+    link_payments = serializers.SerializerMethodField()
 
     def get_lesson_cnt(self, instance):
         return instance.lesson_set.all().count()
 
     def get_is_payments(self, instance):
         return Payments.objects.filter(course=instance).exists()
+
+    def get_link_payments(self, instance):
+        return create_sessions(instance)
 
     class Meta:
         model = Course
