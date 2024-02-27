@@ -78,7 +78,6 @@ class SubscriptionView(APIView):
         user = self.request.user
         course_id = self.request.data.get("course_id")
         course_item = get_object_or_404(Course, id=course_id)
-
         subs_item = Subscription.objects.filter(user=user, course=course_item)
 
         # Если подписка у пользователя на этот курс есть - удаляем ее

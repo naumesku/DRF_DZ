@@ -43,3 +43,10 @@ class PaymentListAPIView(generics.ListAPIView):
     filterset_fields = ['course', 'lesson', 'method']
     ordering_fields = ('date',)
 
+class PaymentsCreateAPIView(generics.CreateAPIView):
+    """Представление для создания платежа"""
+    serializer_class = PaymentsSerializer
+    def perform_create(self, serializer):
+        """Переопределение метода "создание": сохраняем владельца в БД"""
+        new_payments = serializer.save(user=self.request.user)
+        new_payments.save()

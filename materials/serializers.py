@@ -21,17 +21,15 @@ class CourseSerializer(serializers.ModelSerializer):
     lesson_cnt = serializers.SerializerMethodField()
     lesson = LessonSerializer(source='lesson_set', many=True, required=False)
     is_subscription = serializers.SerializerMethodField()
-    link_payments = serializers.SerializerMethodField()
 
     def get_lesson_cnt(self, instance):
+        """Подсчет количества уроков"""
         return instance.lesson_set.all().count()
 
     def get_is_subscription(self, instance):
+        """Получает информацию о подписке"""
         request = self.context.get('request')
         return Subscription.objects.filter(user=request.user.id, course=instance.id).exists()
-
-    def get_link_payments(self, instance):
-        return create_sessions(instance)
 
     class Meta:
         model = Course
