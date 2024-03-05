@@ -1,14 +1,20 @@
+from datetime import datetime, timedelta
+
 from rest_framework import viewsets, generics
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from config.settings import EMAIL_HOST_USER, EMAIL_HOST_PASSWORD
 from materials.models import Course, Lesson, Subscription
 from materials.paginators import MaterialsPaginator
 from materials.serializers import CourseSerializer, LessonSerializer, SubscriptionSerializer
+from materials.tasks import send_message_about_update
+from users.models import User
 
 from users.permisions import IsModer, IsOwner
+from users.tasks import check_active_users
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -20,6 +26,29 @@ class CourseViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         """Переопределение метода "создание": добавляем сохранение владельца"""
         new_course = serializer.save(owner=self.request.user)
+        new_course.save()
+
+    def perform_update(self, serializer):
+        """Переопределение метода "обновления": добавляем дату обновления"""
+        instance = serializer.instance
+        data_last_update = instance.updated  # получаем значение поля 'updated' из данных запроса
+        users_id = [subscription.user_id for subscription in Subscription.objects.filter(course_id=instance.id)]
+        users_object = User.objects.filter(id__in=users_id)
+        emails = list(users_object.values_list('email', flat=True))
+        title = instance.title
+
+        if data_last_update:
+            if datetime.now() > data_last_update + timedelta(hours=4):
+                print(' Запускаем рассылку на подписанных пользователей.')
+                send_message_about_update.delay(emails, "Курс", title)
+            else:
+                print('Рассылку не запускаем, т.к. не прошлдо 4 часа с последнего обновления.')
+
+        else:
+            print('Запускаем рассылку на подписанных пользователей, т.к. уведомлений ещё не было.')
+            send_message_about_update.delay(emails, "Курс", title)
+
+        new_course = serializer.save(updated=datetime.now())
         new_course.save()
 
     def get_permissions(self):

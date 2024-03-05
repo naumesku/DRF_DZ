@@ -1,9 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-
 from conf_my import NULLABLE
 from datetime import date
-
 from materials.models import Lesson, Course
 
 
@@ -21,7 +19,7 @@ class User(AbstractUser):
     REQUIRED_FIELDS = []
 
     def __str__(self):
-        return self.email
+        return f'{self.email} {self.last_login}'
 
     class Meta:
         verbose_name = "пользователь"

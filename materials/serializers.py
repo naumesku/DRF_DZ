@@ -7,7 +7,7 @@ from materials.models import Course, Lesson, Subscription
 from materials.validators import LinkValidator
 from users.models import Payments
 from users.services import create_sessions
-
+import smtplib
 
 class LessonSerializer(serializers.ModelSerializer):
     """Сериализатор для Урока"""

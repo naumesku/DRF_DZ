@@ -112,7 +112,6 @@ class LessonCRUDTest(APITestCase):
             status.HTTP_204_NO_CONTENT
         )
 
-
 class SubscriptionTest(APITestCase):
     """Класс проверки активации подписки"""
     def setUp(self) -> None:

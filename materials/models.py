@@ -10,6 +10,7 @@ class Course(models.Model):
     description = models.TextField(**NULLABLE, verbose_name='описание')
     owner = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.SET_NULL, **NULLABLE)
     amount = models.PositiveIntegerField(default=1000, verbose_name='цена')
+    updated = models.DateTimeField(**NULLABLE, verbose_name='дата и время обновления')
 
     def __str__(self):
         return {self.title}
@@ -27,6 +28,7 @@ class Lesson(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE, **NULLABLE, verbose_name='курс')
     owner = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.SET_NULL, **NULLABLE)
     amount = models.PositiveIntegerField(default=1000, verbose_name='цена')
+    updated = models.DateTimeField(auto_now=True, **NULLABLE)
 
     def __str__(self):
         return {self.title}
@@ -41,7 +43,7 @@ class Subscription(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='курс')
 
     def __str__(self):
-        return f"{self.user} {self.course}"
+        return f"{self.user_id} {self.course_id}"
     class Meta:
         verbose_name = 'Подписка'
         verbose_name_plural = 'Подписки'
