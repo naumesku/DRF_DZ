@@ -88,8 +88,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'dz_drf',
-        'USER': 'postgres',
-        'PASSWORD': 'qqqzzz'
+        'USER': os.getenv('DATABASES_USER'),
+        'PASSWORD': os.getenv('DATABASES_PASSWORD'),
     }
 }
 
@@ -160,8 +160,8 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(hours=3)
 }
 
-STRIPE_BASE_URL = 'https://api.stripe.com'
-STRIPE_API_KEY ='sk_test_51OnjaSIvIURs07U94Qc286RvCT4V4phIYaT5RIlbfsdRx9ypR8Rn3ShJuMKno0MtLO7wTEowN04kKg9hnGoQo45r006Vi8HTUj'
+STRIPE_BASE_URL = os.getenv('STRIPE_BASE_URL')
+STRIPE_API_KEY = os.getenv('STRIPE_API_KEY')
 
-CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'
-CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/0'
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
+CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND')
