@@ -10,10 +10,7 @@ def check_active_users():
     # user.last_login = timezone.now() - datetime.timedelta(days=30) # Устанавливаем новое значение для поля last_login
     # user.save() # Сохраняем изменения
 
-    users_not_active = User.objects.filter(
+    User.objects.filter(
         is_active=True,
         last_login__lte=datetime.datetime.now() - datetime.timedelta(days=30)
-        )
-    for user in users_not_active:
-        user.is_active = False
-        user.save()
+        ).update(is_active=False)

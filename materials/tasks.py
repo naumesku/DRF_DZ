@@ -9,10 +9,9 @@ def send_message_about_update(users: list, name_materials, title):
     message = f'{name_materials} {title} обновлен. Посмотрите изменения'
     print("Сообщение: ", message)
 
-    for user in users:
-        send_mail(
-            subject=subject,
-            message=message,
-            from_email=settings.EMAIL_HOST_USER,
-            recipient_list=[user],
-        )
+    send_mail(
+        subject=subject,
+        message=message,
+        from_email=settings.EMAIL_HOST_USER,
+        recipient_list=users,
+    )
