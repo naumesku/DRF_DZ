@@ -8,19 +8,34 @@ services:
       - '6379:6379'
 
   db:
+    restart: always
     image: postgres
-    environment:
-      - POSTGRES_PASSWORD=${DATABASES_PASSWORD}
-      - PGDATA=/var/lib/postgresgl/data/pgdata
+    env_file:
+      - .env
+    expose:
+      - '5432'
     volumes:
-      - pg_data:/var/lib/postgresgl/data/pgdata
-    ports:
-      - '5432:5432'
+      - pg_data:/var/lib/postgresql/data/
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 10s
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      interval: 5s
       timeout: 5s
       retries: 5
+
+  #  db:
+#    image: postgres
+#    environment:
+#      - POSTGRES_PASSWORD=${DATABASES_PASSWORD}
+#      - PGDATA=/var/lib/postgresgl/data/pgdata
+#    volumes:
+#      - pg_data:/var/lib/postgresgl/data/pgdata
+#    ports:
+#      - '5432:5432'
+#    healthcheck:
+#      test: ["CMD-SHELL", "pg_isready -U postgres"]
+#      interval: 10s
+#      timeout: 5s
+#      retries: 5
 
   app:
     build: .
